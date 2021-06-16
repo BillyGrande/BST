@@ -10,6 +10,7 @@ class Node{
         Node* Right;
         Node* Parent;
         int Height;
+        bool deleted = false;
 };
 
 class BST {
@@ -18,12 +19,14 @@ class BST {
 
     protected:
         Node* Insert(Node* node, int key);
-
+        void PrintTree(Node* node);
+        Node* Delete(Node* node, int key);
 
     public:
-        BST(Node* node);
 
+        void PrintTree();
         void Insert(int key);
+        void Delete(int key);
 };
 
 
