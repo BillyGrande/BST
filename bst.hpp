@@ -27,6 +27,7 @@ class BST {
         void PrintTree();
         void Insert(int key);
         void Delete(int key);
+        void PrintRoot();
 };
 
 

@@ -14,11 +14,13 @@ Node* BST::Insert(Node* node, int key){
         node->Right = Insert(node->Right,key);
         node->Right->Parent=node;
     }
-    else{
+    else if (node->Key > key){
         node->Left = Insert(node->Left, key);
         node->Left->Parent=node;
     }
-
+    else{
+        if (node->deleted) node->deleted=false;
+    }
     return node;
 }
 
@@ -37,7 +39,12 @@ void BST::PrintTree(Node * node)
     PrintTree(node->Left);
 
     // Print the key
-    std::cout << node->Key << " ";
+    std::cout << node->Key;
+
+    if (node->deleted)
+        std::cout << "X";
+
+    std::cout << " ";
 
     // Continue to the greatest key
     // which is in the right subtree
@@ -73,7 +80,6 @@ Node* BST::Delete(Node* node, int key){
         }
         else{
             node->deleted = true;
-            node= node->Left;
         }
     }
     else if (node->Key < key){
@@ -87,4 +93,8 @@ Node* BST::Delete(Node* node, int key){
 
 void BST::Delete(int key){
     root = Delete(root,key);
+}
+
+void BST::PrintRoot(){
+    std::cout << root->Key << std::endl;
 }
