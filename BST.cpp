@@ -1,6 +1,6 @@
 #include <iostream>
 #include "bst.hpp"
-
+#include <vector>
 
 Node* BST::Insert(Node* node, int key){
     if (node == nullptr){
@@ -97,4 +97,128 @@ void BST::Delete(int key){
 
 void BST::PrintRoot(){
     std::cout << root->Key << std::endl;
+}
+
+void BST::BuildVector(Node* node,std::vector<Node*>* nodes){
+
+
+    if (node == nullptr){
+        return;
+    }
+
+    BuildVector(node->Left, nodes);
+    nodes->push_back(node);
+    BuildVector(node->Right, nodes);
+
+}
+
+void BST::BuildTree(BST* tree, std::vector<Node*>* nodes, int start, int end){
+
+    if (start>end){
+        return;
+    }
+
+    std::vector<Node*> cool = *nodes;
+
+    int mid = (start+end)/2;
+    int data = cool[mid]->Key;
+    tree->Insert(data);
+
+
+    BuildTree(tree, nodes, start, mid-1);
+    BuildTree(tree, nodes, mid+1, end);
+}
+
+void BST::Reconstruct(Node* node){
+
+    std::vector<Node*> nodes;
+    if (node == nullptr){
+        BuildVector(root, &nodes);
+    }else{
+        BuildVector(node, &nodes);
+    }
+
+    BST* temp_tree = new BST;
+    std::cout << "VECTOR SIZE " << nodes.size() << std::endl;
+    BuildTree(temp_tree, &nodes, 0, nodes.size()-1);
+
+
+    // for(int i=0 ; i<nodes.size(); ++i){
+    //     std::cout << nodes[i]->Key << " ";
+    // }
+
+    temp_tree->PrintRoot();
+}
+
+int BST::Max(int a, int b){
+    if (a > b){
+        return a;
+    }else{
+        return b;
+    }
+}
+
+int BST::Height(Node * node){
+    if (node == nullptr){
+        return 0;
+    }
+
+    int rh = Height(node->Right);
+    int lh = Height(node->Left);
+
+    rh = rh + 1;
+    lh = lh + 1;
+
+    return Max(rh,lh);
+
+}
+
+void BST::TreeHeight(){
+    std::cout << "Tree Height is " << Height(root) << std::endl;
+}
+
+int BST::Vertices(Node* node){
+
+    // int count = 0;
+    // auto next = node->Left;
+    // while(next != nullptr){
+    //     int a = Vertices(next->Right);
+    //     count = count + a + 1;
+    //     next = next->Left;
+    // }
+
+    // next = node->Right;
+    // while(next != nullptr){
+    //     int b = Vertices(next->Left);
+    //     count = count + b + 1;
+    //     next = next->Right;
+    // }
+
+    // return count+1;
+
+    if (node == nullptr){
+        return -1;
+    }
+
+    int lt = Vertices(node->Left);
+    lt = lt + 1;
+    int rt = Vertices(node->Right);
+    rt = rt + 1;
+    return lt+rt;
+}
+
+int BST::RealVertices(Node *node){
+    return Vertices(node) + 1;
+}
+
+void BST::Vertices(){
+    std::cout << "VERTICES " << RealVertices(root) << std::endl;
+}
+void BST::Balance(Node* node){
+    if (Height(node)<3){
+        return;
+    }
+
+    //Incomplete
+    //
 }
